@@ -90,7 +90,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleEscape)
 })
 </script>
-
 <style scoped>
 .confirm-modal-overlay {
   position: fixed;
@@ -113,20 +112,20 @@ onBeforeUnmount(() => {
 }
 
 .confirm-modal {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(30px);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   width: 90%;
   max-width: 400px;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.15);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
 }
 
 .confirm-modal.mobile {
   width: 95%;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 @keyframes slideUp {
@@ -156,7 +155,7 @@ onBeforeUnmount(() => {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .confirm-modal-body {
@@ -166,7 +165,7 @@ onBeforeUnmount(() => {
 
 .confirm-modal-body p {
   margin: 0;
-  color: #6B7280;
+  color: var(--gray-500);
   line-height: 1.6;
 }
 
@@ -174,14 +173,14 @@ onBeforeUnmount(() => {
   display: flex;
   gap: 12px;
   padding: 16px 24px 24px;
-  border-top: 1px solid rgba(139, 92, 246, 0.06);
+  border-top: var(--border-primary-light);
 }
 
 .cancel-btn,
 .confirm-btn {
   flex: 1;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -191,23 +190,23 @@ onBeforeUnmount(() => {
 
 .cancel-btn {
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  color: #6B21A5;
+  border: var(--border-primary);
+  color: var(--text-muted);
 }
 
 .cancel-btn:hover {
-  background: rgba(139, 92, 246, 0.05);
+  background: var(--p-100);
   transform: translateY(-1px);
 }
 
 .confirm-btn {
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  color: white;
+  background: var(--gradient-danger);
+  color: var(--text-white);
 }
 
 .confirm-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+  box-shadow: var(--shadow-danger);
 }
 
 @media (max-width: 768px) {

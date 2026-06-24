@@ -650,15 +650,14 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 /* App Header */
 .app-header {
   position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+  border-bottom: var(--border-primary-light);
   padding: 12px 24px;
   display: flex;
   justify-content: space-between;
@@ -666,10 +665,15 @@ export default {
   z-index: 100;
 }
 
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
 .logo {
   font-size: 20px;
   font-weight: 600;
-  background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 50%, #A78BFA 100%);
+  background: var(--gradient-logo);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -682,137 +686,115 @@ export default {
   align-items: center;
 }
 
-.history-icon-btn,
-.settings-icon-btn {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+.history-icon-btn {
+  background: transparent;
+  border: none;
   cursor: pointer;
   padding: 8px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
-  color: #6B21A5;
+  transition: all 0.2s;
+  color: var(--text-muted);
 }
 
-.history-icon-btn:hover,
-.settings-icon-btn:hover {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: rgba(139, 92, 246, 0.3);
+.history-icon-btn:hover {
+  background: var(--p-100);
   transform: scale(1.05);
 }
 
+.settings-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--text-muted);
+}
+
 .settings-icon-btn:hover {
+  background: var(--p-100);
   transform: rotate(90deg);
 }
 
-/* Main Background - Light Berry Gradient */
+.main-content {
+  display: block;
+}
+
+/* Main Background */
 .converter-wrapper {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 25%, #FCE7F3 60%, #ECFDF5 100%);
-  position: relative;
+  background: var(--gradient-main);
 }
 
-/* Add subtle decorative elements */
-.converter-wrapper::before {
-  content: '';
-  position: fixed;
-  top: -50%;
-  right: -50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(196, 181, 253, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.converter-wrapper::after {
-  content: '';
-  position: fixed;
-  bottom: -50%;
-  left: -50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(167, 139, 250, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.main-content {
-  position: relative;
-  z-index: 1;
-}
-
-/* Input Display Row - Grid Layout for Side by Side */
 .input-display-row {
   margin: 20px auto;
-  padding: 5px 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  padding: 5px;
+  display: block;
   width: 100%;
   max-width: 1200px;
 }
 
 .text-section {
   width: 100%;
-  padding: 0;
-  margin-bottom: 0;
+  padding: 0 1rem;
+  margin-bottom: 20px;
 }
 
 .input-wrapper {
   position: relative;
   width: 100%;
-  display: block;
 }
 
 .text-input {
-  width: 100% !important;
-  min-height: 120px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  min-height: 40px;
+  padding: 12px;
+  background: var(--bg-input);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(139, 92, 246, 0.15);
-  border-radius: 12px;
-  font-size: 16px;
-  transition: all 0.3s;
+  border: var(--border-primary-strong);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  transition: all 0.2s;
   resize: vertical;
   font-family: inherit;
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
-  line-height: 1.8;
-  color: #1a1a1a;
   box-sizing: border-box;
-  display: block;
+  color: var(--text);
 }
 
 .text-input:focus {
   outline: none;
-  border-color: #8B5CF6;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.08);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
   background: rgba(255, 255, 255, 0.95);
 }
 
 .text-input::placeholder {
-  color: #A78BFA;
+  color: var(--p-400);
   opacity: 0.5;
 }
 
 .english-input {
-  border-color: rgba(16, 185, 129, 0.2) !important;
+  border-color: var(--border-secondary-strong) !important;
 }
 
 .english-input:focus {
-  border-color: #10B981 !important;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08) !important;
+  border-color: var(--secondary) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
 }
 
 .english-input::placeholder {
-  color: #6EE7B7;
+  color: var(--g-300);
   opacity: 0.5;
 }
 
@@ -823,46 +805,156 @@ export default {
   font-weight: 600;
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  border-radius: 8px;
-  color: #6B21A5;
+  border: var(--border-primary);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .action-btn:hover {
-  background: rgba(139, 92, 246, 0.08);
-  border-color: rgba(139, 92, 246, 0.3);
-  color: #7C3AED;
-  transform: translateY(-1px);
+  background: var(--p-100);
+  border-color: var(--primary);
+  color: var(--primary-dark);
 }
 
 .edit-btn {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--bg-input);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  border-radius: 8px;
+  border: var(--border-primary);
+  border-radius: var(--radius-sm);
   padding: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
-  color: #6B21A5;
+  transition: all 0.2s;
+  color: var(--text-muted);
   z-index: 10;
 }
 
 .edit-btn:hover {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: #8B5CF6;
-  color: #7C3AED;
+  background: var(--p-100);
+  border-color: var(--primary);
+  color: var(--primary-dark);
   transform: scale(1.05);
 }
 
-/* Comparison Section */
+.quick-actions {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.clear-all-btn {
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--r-100);
+  border: 1px solid var(--r-200);
+  border-radius: var(--radius-sm);
+  color: var(--r-600);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-all-btn:hover {
+  background: var(--r-200);
+  transform: translateY(-1px);
+}
+
+/* Korean word-based romanization - ABOVE the word */
+.line-words {
+  text-wrap: wrap;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.8;
+  gap: 6px 12px;
+}
+
+.word-group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: normal;
+}
+
+.word-with-romanization {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.romanization-above {
+  display: flex;
+  gap: 0px;
+  justify-content: center;
+  margin-bottom: 2px;
+  flex-wrap: nowrap;
+}
+
+.romanization-char {
+  color: var(--primary);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: inline-block;
+  opacity: 0.7;
+}
+
+.word {
+  display: inline-flex;
+  font-weight: 600;
+  color: var(--text);
+  gap: 0px;
+}
+
+.korean-char {
+  display: inline-block;
+}
+
+.english-translation-box {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border: var(--border-secondary);
+}
+
+.english-text {
+  color: var(--g-800);
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--primary);
+  font-style: italic;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+}
+
+.relative {
+  position: relative;
+}
+
 .comparison-section {
   max-width: 1200px;
   margin: 0 auto;
@@ -883,13 +975,13 @@ export default {
 }
 
 .line-container {
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 16px;
   margin-bottom: 12px;
-  border: 1px solid rgba(139, 92, 246, 0.08);
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.06);
+  border: var(--border-primary-light);
+  box-shadow: var(--shadow-primary);
   width: 100%;
   overflow-x: auto;
   word-wrap: break-word;
@@ -899,7 +991,7 @@ export default {
 
 .line-container:hover {
   background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 4px 24px rgba(139, 92, 246, 0.1);
+  box-shadow: var(--shadow-primary-hover);
   border-color: rgba(139, 92, 246, 0.15);
 }
 
@@ -910,115 +1002,7 @@ export default {
   overflow-wrap: break-word;
 }
 
-/* Word and Romanization Styles */
-.line-words {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 12px;
-  align-items: flex-start;
-}
-
-.word-group {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.word-with-romanization {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.romanization-above {
-  display: flex;
-  gap: 0px;
-  justify-content: center;
-  margin-bottom: 2px;
-  flex-wrap: nowrap;
-}
-
-.romanization-char {
-  color: #8B5CF6;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  display: inline-block;
-  opacity: 0.7;
-}
-
-.word {
-  display: inline-flex;
-  font-weight: 600;
-  color: #1a1a1a;
-  gap: 0px;
-}
-
-.korean-char {
-  display: inline-block;
-}
-
-.english-translation-box {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  border: 1px solid rgba(16, 185, 129, 0.08);
-}
-
-.english-text {
-  color: #065F46;
-  line-height: 1.6;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: #8B5CF6;
-  font-style: italic;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-}
-
-/* Quick Actions */
-.quick-actions {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 1rem;
-  text-align: center;
-}
-
-.clear-all-btn {
-  padding: 8px 20px;
-  font-size: 13px;
-  font-weight: 600;
-  background: rgba(254, 202, 202, 0.5);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(239, 68, 68, 0.15);
-  border-radius: 8px;
-  color: #DC2626;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.clear-all-btn:hover {
-  background: rgba(254, 202, 202, 0.7);
-  transform: translateY(-1px);
-  border-color: rgba(239, 68, 68, 0.3);
-}
-
-.scroll-spacer {
-  display: block;
-}
-
-/* Mobile Responsive */
+/* Mobile specific fixes */
 @media (max-width: 768px) {
   .app-header {
     padding: 8px 16px;
@@ -1029,20 +1013,11 @@ export default {
   }
   
   .input-display-row {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 5px 0.5rem;
     margin: 10px auto;
   }
   
   .text-section {
-    padding: 0;
-  }
-  
-  .text-input {
-    min-height: 100px;
-    padding: 12px;
-    font-size: 15px;
+    padding: 0 0.5rem;
   }
   
   .comparison-section {
@@ -1058,25 +1033,20 @@ export default {
   }
   
   .romanization-char {
-    font-size: 0.5em !important;
+    font-size: 0.55em !important;
     min-width: 0.6em !important;
   }
 }
 
+/* For very small screens */
 @media (max-width: 480px) {
-  .input-display-row {
-    gap: 12px;
-    padding: 5px 0.25rem;
-  }
-  
-  .text-input {
-    min-height: 80px;
-    padding: 10px;
-    font-size: 14px;
-  }
-  
   .line-words {
     gap: 2px 6px;
+  }
+  
+  .romanization-char {
+    font-size: 0.5em !important;
+    min-width: 0.5em !important;
   }
   
   .line-container {
@@ -1085,11 +1055,6 @@ export default {
   
   .english-text {
     font-size: 0.9em;
-  }
-  
-  .action-btn {
-    padding: 6px 16px;
-    font-size: 12px;
   }
 }
 </style>

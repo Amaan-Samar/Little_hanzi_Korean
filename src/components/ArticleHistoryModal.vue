@@ -199,7 +199,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleEscape)
 })
 </script>
-
 <style scoped>
 .history-modal-overlay {
   position: fixed;
@@ -222,9 +221,9 @@ onBeforeUnmount(() => {
 }
 
 .history-modal {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(30px);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   width: 75%;
   max-width: 700px;
   max-height: 85vh;
@@ -232,13 +231,13 @@ onBeforeUnmount(() => {
   flex-direction: column;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .history-modal.mobile {
   width: 95%;
   max-height: 90vh;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 @keyframes slideUp {
@@ -262,7 +261,7 @@ onBeforeUnmount(() => {
 
 .close-btn {
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: var(--border-primary);
   cursor: pointer;
   padding: 8px;
   border-radius: 10px;
@@ -270,13 +269,13 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
-  color: #6B21A5;
+  color: var(--text-muted);
 }
 
 .close-btn:hover {
-  background: rgba(139, 92, 246, 0.08);
-  border-color: rgba(139, 92, 246, 0.2);
-  color: #7C3AED;
+  background: var(--p-100);
+  border-color: var(--primary);
+  color: var(--primary-dark);
 }
 
 .history-modal-body {
@@ -288,7 +287,7 @@ onBeforeUnmount(() => {
 .empty-history {
   text-align: center;
   padding: 60px 20px;
-  color: #8B5CF6;
+  color: var(--primary);
 }
 
 .empty-history p {
@@ -298,7 +297,7 @@ onBeforeUnmount(() => {
 
 .empty-subtitle {
   font-size: 14px !important;
-  color: #A78BFA;
+  color: var(--p-400);
   opacity: 0.7;
 }
 
@@ -310,13 +309,13 @@ onBeforeUnmount(() => {
 
 .list-header {
   padding: 12px 20px;
-  background: rgba(139, 92, 246, 0.04);
-  border-bottom: 1px solid rgba(139, 92, 246, 0.06);
+  background: var(--p-100);
+  border-bottom: var(--border-primary-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  color: #6B21A5;
+  color: var(--text-muted);
   font-weight: 500;
   position: sticky;
   top: 0;
@@ -325,10 +324,10 @@ onBeforeUnmount(() => {
 
 .delete-all-btn {
   padding: 6px 12px;
-  background: rgba(254, 202, 202, 0.3);
-  border: 1px solid rgba(239, 68, 68, 0.15);
-  border-radius: 8px;
-  color: #DC2626;
+  background: var(--r-100);
+  border: 1px solid var(--r-200);
+  border-radius: var(--radius-sm);
+  color: var(--r-600);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -339,7 +338,7 @@ onBeforeUnmount(() => {
 }
 
 .delete-all-btn:hover {
-  background: rgba(254, 202, 202, 0.5);
+  background: var(--r-200);
   transform: translateY(-1px);
 }
 
@@ -352,24 +351,24 @@ onBeforeUnmount(() => {
   align-items: stretch;
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 92, 246, 0.08);
-  border-radius: 12px;
+  border: var(--border-primary-light);
+  border-radius: var(--radius-md);
   margin-bottom: 12px;
   transition: all 0.3s;
   overflow: hidden;
 }
 
 .article-item:hover {
-  border-color: rgba(139, 92, 246, 0.2);
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-primary);
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.8);
 }
 
 .article-item.current {
-  border-color: #8B5CF6;
-  background: rgba(139, 92, 246, 0.06);
-  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+  border-color: var(--primary);
+  background: var(--p-100);
+  box-shadow: var(--shadow-primary-hover);
 }
 
 .article-content {
@@ -398,15 +397,15 @@ onBeforeUnmount(() => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text);
   word-break: break-word;
 }
 
 .current-badge {
   font-size: 11px;
   font-weight: 600;
-  color: #7C3AED;
-  background: rgba(139, 92, 246, 0.1);
+  color: var(--primary-dark);
+  background: var(--p-100);
   padding: 2px 10px;
   border-radius: 12px;
   text-transform: uppercase;
@@ -415,14 +414,14 @@ onBeforeUnmount(() => {
 
 .article-date {
   font-size: 12px;
-  color: #8B5CF6;
+  color: var(--primary);
   opacity: 0.7;
   white-space: nowrap;
 }
 
 .article-preview {
   font-size: 13px;
-  color: #4A1942;
+  color: var(--text-secondary);
   line-height: 1.5;
   margin-bottom: 4px;
   overflow: hidden;
@@ -432,7 +431,7 @@ onBeforeUnmount(() => {
 }
 
 .article-preview.korean-preview {
-  color: #1a1a1a;
+  color: var(--text);
   font-weight: 500;
   opacity: 1;
 }
@@ -440,7 +439,7 @@ onBeforeUnmount(() => {
 .preview-label {
   font-size: 11px;
   font-weight: 600;
-  color: #8B5CF6;
+  color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.3px;
   margin-right: 4px;
@@ -451,7 +450,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   padding: 0 16px 0 0;
-  border-left: 1px solid rgba(139, 92, 246, 0.06);
+  border-left: var(--border-primary-light);
 }
 
 .delete-btn {
@@ -459,32 +458,32 @@ onBeforeUnmount(() => {
   border: none;
   cursor: pointer;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
-  color: #D1D5DB;
+  color: var(--gray-300);
 }
 
 .delete-btn:hover {
-  background: rgba(254, 202, 202, 0.3);
-  color: #DC2626;
+  background: var(--r-100);
+  color: var(--r-600);
 }
 
 .history-modal-footer {
   padding: 16px 20px;
-  border-top: 1px solid rgba(139, 92, 246, 0.06);
+  border-top: var(--border-primary-light);
   display: flex;
   justify-content: flex-end;
 }
 
 .close-btn-bottom {
   padding: 10px 24px;
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  background: var(--gradient-btn);
   border: none;
-  border-radius: 10px;
-  color: white;
+  border-radius: var(--radius-md);
+  color: var(--text-white);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
@@ -492,7 +491,7 @@ onBeforeUnmount(() => {
 
 .close-btn-bottom:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-primary-hover);
 }
 
 @media (max-width: 768px) {

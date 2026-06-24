@@ -256,9 +256,9 @@ onBeforeUnmount(() => {
 }
 
 .settings-modal {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(30px);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   width: 75%;
   max-width: 550px;
   max-height: 85vh;
@@ -266,13 +266,13 @@ onBeforeUnmount(() => {
   flex-direction: column;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .settings-modal.mobile {
   width: 95%;
   max-height: 90vh;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 @keyframes slideUp {
@@ -296,7 +296,7 @@ onBeforeUnmount(() => {
 
 .close-btn {
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: var(--border-primary);
   cursor: pointer;
   padding: 8px;
   border-radius: 10px;
@@ -304,13 +304,13 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
-  color: #6B21A5;
+  color: var(--text-muted);
 }
 
 .close-btn:hover {
-  background: rgba(139, 92, 246, 0.08);
-  border-color: rgba(139, 92, 246, 0.2);
-  color: #7C3AED;
+  background: var(--p-100);
+  border-color: var(--primary);
+  color: var(--primary-dark);
 }
 
 .settings-modal-body {
@@ -331,7 +331,7 @@ onBeforeUnmount(() => {
   display: block;
   font-size: 13px;
   font-weight: 600;
-  color: #6B21A5;
+  color: var(--text-muted);
   margin-bottom: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -340,7 +340,7 @@ onBeforeUnmount(() => {
 .setting-description {
   margin-top: 8px;
   font-size: 12px;
-  color: #8B5CF6;
+  color: var(--primary);
   line-height: 1.4;
   opacity: 0.7;
 }
@@ -355,7 +355,7 @@ onBeforeUnmount(() => {
   flex: 1;
   height: 4px;
   border-radius: 2px;
-  background: rgba(139, 92, 246, 0.15);
+  background: var(--p-200);
   cursor: pointer;
   -webkit-appearance: none;
 }
@@ -365,7 +365,7 @@ onBeforeUnmount(() => {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  background: var(--gradient-btn);
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
@@ -378,7 +378,7 @@ onBeforeUnmount(() => {
 .size-value {
   font-size: 14px;
   font-weight: 600;
-  color: #7C3AED;
+  color: var(--primary-dark);
   min-width: 45px;
   text-align: center;
 }
@@ -393,26 +393,26 @@ onBeforeUnmount(() => {
   padding: 10px 16px;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: var(--border-primary);
   border-radius: 10px;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
   text-align: left;
-  color: #4A1942;
+  color: var(--text-secondary);
 }
 
 .font-option:hover {
-  background: rgba(139, 92, 246, 0.05);
-  border-color: rgba(139, 92, 246, 0.2);
+  background: var(--p-100);
+  border-color: var(--primary);
   transform: translateY(-1px);
 }
 
 .font-option.active {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.1));
-  border-color: #8B5CF6;
-  color: #7C3AED;
-  box-shadow: 0 2px 12px rgba(139, 92, 246, 0.1);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  box-shadow: var(--shadow-primary);
 }
 
 .toggle-group {
@@ -427,14 +427,14 @@ onBeforeUnmount(() => {
   gap: 12px;
   cursor: pointer;
   font-size: 15px;
-  color: #4A1942;
+  color: var(--text-secondary);
 }
 
 .toggle-item input {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #8B5CF6;
+  accent-color: var(--primary);
 }
 
 .toggle-item span {
@@ -452,14 +452,14 @@ onBeforeUnmount(() => {
   gap: 8px;
   cursor: pointer;
   font-size: 15px;
-  color: #4A1942;
+  color: var(--text-secondary);
 }
 
 .radio-item input {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #8B5CF6;
+  accent-color: var(--primary);
 }
 
 .radio-item span {
@@ -468,10 +468,10 @@ onBeforeUnmount(() => {
 
 .reset-btn {
   padding: 10px 20px;
-  background: rgba(254, 202, 202, 0.3);
-  border: 1px solid rgba(239, 68, 68, 0.15);
+  background: var(--r-100);
+  border: 1px solid var(--r-200);
   border-radius: 10px;
-  color: #DC2626;
+  color: var(--r-600);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
@@ -479,7 +479,7 @@ onBeforeUnmount(() => {
 }
 
 .reset-btn:hover {
-  background: rgba(254, 202, 202, 0.5);
+  background: var(--r-200);
   transform: translateY(-1px);
 }
 

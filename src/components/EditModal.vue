@@ -110,7 +110,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleEscape)
 })
 </script>
-
 <style scoped>
 .edit-modal-overlay {
   position: fixed;
@@ -133,9 +132,9 @@ onBeforeUnmount(() => {
 }
 
 .edit-modal {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(30px);
-  border-radius: 24px;
+  border-radius: var(--radius-2xl);
   width: 90%;
   max-width: 700px;
   height: 80vh;
@@ -144,14 +143,14 @@ onBeforeUnmount(() => {
   flex-direction: column;
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .edit-modal.mobile {
   width: 95%;
   height: 85vh;
   max-height: none;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
 }
 
 @keyframes slideUp {
@@ -170,7 +169,7 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+  border-bottom: var(--border-primary-light);
   flex-shrink: 0;
 }
 
@@ -178,15 +177,15 @@ onBeforeUnmount(() => {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .close-btn {
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  border: var(--border-primary);
   font-size: 24px;
   cursor: pointer;
-  color: #6B21A5;
+  color: var(--text-muted);
   transition: all 0.3s;
   width: 36px;
   height: 36px;
@@ -199,9 +198,9 @@ onBeforeUnmount(() => {
 }
 
 .close-btn:hover {
-  background: rgba(139, 92, 246, 0.08);
-  border-color: rgba(139, 92, 246, 0.2);
-  color: #7C3AED;
+  background: var(--p-100);
+  border-color: var(--primary);
+  color: var(--primary-dark);
 }
 
 .edit-modal-body {
@@ -216,20 +215,20 @@ onBeforeUnmount(() => {
   height: 100%;
   min-height: 200px;
   padding: 16px;
-  border: 2px solid rgba(139, 92, 246, 0.1);
-  border-radius: 12px;
+  border: var(--border-primary-strong);
+  border-radius: var(--radius-md);
   font-family: inherit;
   line-height: 1.8;
   resize: none;
   outline: none;
   transition: all 0.3s;
   background: rgba(255, 255, 255, 0.6);
-  color: #1a1a1a;
+  color: var(--text);
 }
 
 .edit-textarea:focus {
-  border-color: #8B5CF6;
-  background: white;
+  border-color: var(--primary);
+  background: var(--bg-white);
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.06);
 }
 
@@ -238,14 +237,14 @@ onBeforeUnmount(() => {
   justify-content: flex-end;
   gap: 12px;
   padding: 16px 24px;
-  border-top: 1px solid rgba(139, 92, 246, 0.08);
+  border-top: var(--border-primary-light);
   flex-shrink: 0;
 }
 
 .cancel-btn,
 .save-btn {
   padding: 10px 24px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -255,23 +254,23 @@ onBeforeUnmount(() => {
 
 .cancel-btn {
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  color: #6B21A5;
+  border: var(--border-primary);
+  color: var(--text-muted);
 }
 
 .cancel-btn:hover {
-  background: rgba(139, 92, 246, 0.05);
-  border-color: rgba(139, 92, 246, 0.2);
+  background: var(--p-100);
+  border-color: var(--primary);
 }
 
 .save-btn {
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
-  color: white;
+  background: var(--gradient-btn);
+  color: var(--text-white);
 }
 
 .save-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-primary-hover);
 }
 
 @media (max-width: 768px) {
