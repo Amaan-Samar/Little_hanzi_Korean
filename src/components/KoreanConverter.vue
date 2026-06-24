@@ -785,16 +785,34 @@ export default {
 }
 
 .english-input {
-  border-color: var(--border-secondary-strong) !important;
+  width: 100%;
+  min-height: 40px;
+  padding: 12px;
+  background: var(--bg-input);
+  backdrop-filter: blur(10px);
+  border: var(--border-primary-strong);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  transition: all 0.2s;
+  resize: vertical;
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  color: var(--text);
 }
 
 .english-input:focus {
-  border-color: var(--secondary) !important;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .english-input::placeholder {
-  color: var(--g-300);
+  color: var(--p-400);
   opacity: 0.5;
 }
 
