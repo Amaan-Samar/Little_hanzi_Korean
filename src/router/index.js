@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('../components/FontConverter.vue'),
     },
     // {
-    //   path: '/about',
+    //   path: '/about', make change
     //   name: 'about',
     //   component: () => import('../views/AboutView.vue'),
     // },
