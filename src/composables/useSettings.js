@@ -1,3 +1,4 @@
+// composables/useSettings.js
 import { ref, watch } from 'vue'
 
 const STORAGE_KEY = 'littleKorean_settings'
@@ -12,24 +13,17 @@ export function useSettings() {
         
         // Migrate from old Chinese settings if needed
         const migrated = {
-          fontSize: parsed.fontSize ?? 14,
+          fontSize: parsed.fontSize ?? 18,
           selectedFont: parsed.selectedFont ?? 'NotoSansSC',
-          // Migrate old Chinese setting names to Korean
           showRomanization: parsed.showRomanization ?? parsed.showPinyin ?? true,
           showKorean: parsed.showKorean ?? parsed.showChinese ?? true,
           showEnglish: parsed.showEnglish ?? true,
-          // Migrate display order
           displayOrder: parsed.displayOrder === 'en-cn' ? 'en-kr' : 
                        parsed.displayOrder === 'cn-en' ? 'kr-en' : 
                        parsed.displayOrder ?? 'kr-en',
           interleaveLines: parsed.interleaveLines ?? false,
-          // Migrate old percentage values to absolute pixel values
-          romanizationFontSize: typeof parsed.romanizationFontSize === 'number' && parsed.romanizationFontSize < 1 
-            ? Math.round(parsed.romanizationFontSize * (parsed.fontSize || 14)) 
-            : parsed.romanizationFontSize ?? 8,
-          englishFontSize: typeof parsed.englishFontSize === 'number' && parsed.englishFontSize < 1
-            ? Math.round(parsed.englishFontSize * (parsed.fontSize || 14))
-            : parsed.englishFontSize ?? 12
+          romanizationFontSize: parsed.romanizationFontSize ?? 10,
+          englishFontSize: parsed.englishFontSize ?? 14
         }
         
         return migrated
@@ -48,17 +42,17 @@ export function useSettings() {
     }
   }
 
-  // Default settings - Korean optimized with absolute pixel values
+  // Default settings - Korean optimized
   const defaultSettings = {
-    fontSize: 14,
+    fontSize: 18,
     selectedFont: 'NotoSansSC',
     showRomanization: true,
     showKorean: true,
     showEnglish: true,
     displayOrder: 'kr-en',
     interleaveLines: false,
-    romanizationFontSize: 8, // Absolute pixel value
-    englishFontSize: 12 // Absolute pixel value
+    romanizationFontSize: 10,
+    englishFontSize: 14
   }
 
   const savedSettings = loadSettings()

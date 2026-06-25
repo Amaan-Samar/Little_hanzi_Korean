@@ -50,9 +50,6 @@
                 <span class="px-2 py-0.5 bg-gray-100 rounded-full">
                   {{ localSettings.displayOrder === 'kr-en' ? 'Korean → English' : 'English → Korean' }}
                 </span>
-                <span v-if="localSettings.interleaveLines" class="px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full">
-                  Interleaved
-                </span>
               </div>
             </div>
           </div>
@@ -93,7 +90,7 @@
           <!-- Romanization Font Size -->
           <div class="mb-6 last:mb-0">
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Romanization Size</label>
-            <div class="flex items-center gap-3.5">
+            <div class="flex items-center gap-3.5 mb-3.5">
               <button 
                 class="w-9 h-9 rounded-full border border-black/5 bg-white cursor-pointer flex items-center justify-center transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:border-black/10 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="decreaseRomanizationSize"
@@ -101,15 +98,7 @@
               >
                 <Minus :size="16" />
               </button>
-              <input 
-                type="number" 
-                v-model.number="localSettings.romanizationFontSize"
-                class="w-16 text-center text-lg font-semibold text-gray-800 bg-white border border-black/10 rounded-lg py-1.5 px-2 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
-                min="4"
-                :max="localSettings.fontSize"
-                @input="handleRomanizationInput"
-                @blur="validateRomanizationInput"
-              />
+              <span class="text-lg font-semibold text-gray-800 min-w-[48px] text-center">{{ localSettings.romanizationFontSize }}</span>
               <button 
                 class="w-9 h-9 rounded-full border border-black/5 bg-white cursor-pointer flex items-center justify-center transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:border-black/10 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="increaseRomanizationSize"
@@ -118,13 +107,24 @@
                 <Plus :size="16" />
               </button>
             </div>
+            <div class="flex gap-1.5 flex-wrap">
+              <button
+                v-for="size in romanizationPresets"
+                :key="size"
+                class="px-2.5 py-1 border border-black/5 rounded-md bg-white cursor-pointer text-xs font-medium transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:border-black/10"
+                :class="{ 'bg-gray-100 border-gray-300 text-gray-700 shadow-sm': localSettings.romanizationFontSize === size }"
+                @click="setRomanizationSize(size)"
+              >
+                {{ size }}
+              </button>
+            </div>
             <p class="text-xs text-gray-400 mt-2">Maximum: {{ localSettings.fontSize }}px (same as Korean)</p>
           </div>
 
           <!-- English Font Size -->
           <div class="mb-6 last:mb-0">
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">English Size</label>
-            <div class="flex items-center gap-3.5">
+            <div class="flex items-center gap-3.5 mb-3.5">
               <button 
                 class="w-9 h-9 rounded-full border border-black/5 bg-white cursor-pointer flex items-center justify-center transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:border-black/10 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="decreaseEnglishSize"
@@ -132,21 +132,24 @@
               >
                 <Minus :size="16" />
               </button>
-              <input 
-                type="number" 
-                v-model.number="localSettings.englishFontSize"
-                class="w-16 text-center text-lg font-semibold text-gray-800 bg-white border border-black/10 rounded-lg py-1.5 px-2 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-200"
-                min="4"
-                :max="localSettings.fontSize"
-                @input="handleEnglishInput"
-                @blur="validateEnglishInput"
-              />
+              <span class="text-lg font-semibold text-gray-800 min-w-[48px] text-center">{{ localSettings.englishFontSize }}</span>
               <button 
                 class="w-9 h-9 rounded-full border border-black/5 bg-white cursor-pointer flex items-center justify-center transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:border-black/10 hover:scale-105 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
                 @click="increaseEnglishSize"
                 :disabled="localSettings.englishFontSize >= localSettings.fontSize"
               >
                 <Plus :size="16" />
+              </button>
+            </div>
+            <div class="flex gap-1.5 flex-wrap">
+              <button
+                v-for="size in englishPresets"
+                :key="size"
+                class="px-2.5 py-1 border border-black/5 rounded-md bg-white cursor-pointer text-xs font-medium transition-all duration-200 text-gray-500 hover:bg-gray-50 hover:border-black/10"
+                :class="{ 'bg-gray-100 border-gray-300 text-gray-700 shadow-sm': localSettings.englishFontSize === size }"
+                @click="setEnglishSize(size)"
+              >
+                {{ size }}
               </button>
             </div>
             <p class="text-xs text-gray-400 mt-2">Maximum: {{ localSettings.fontSize }}px (same as Korean)</p>
@@ -213,26 +216,9 @@
             </div>
           </div>
 
-          <!-- Interleave Lines -->
-          <div class="mb-6 last:mb-0">
-            <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">Layout Mode</label>
-            <div class="flex flex-col gap-3">
-              <label class="flex items-center gap-3 cursor-pointer text-sm text-gray-600">
-                <input type="checkbox" v-model="localSettings.interleaveLines" class="w-4.5 h-4.5 cursor-pointer accent-purple-500" @change="handleInterleaveChange">
-                <span>Interleave Lines</span>
-              </label>
-              <p class="text-xs text-gray-400 leading-relaxed">
-                Alternates Korean and English lines for easier parallel reading
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-2 flex gap-3">
-            <button class="flex-1 px-5 py-2.5 bg-red-50 border border-red-200 rounded-lg text-red-600 font-medium cursor-pointer transition-all duration-200 hover:bg-red-100 hover:-translate-y-0.5" @click="resetToDefaults">
+          <div class="mt-2">
+            <button class="w-full px-5 py-2.5 bg-red-50 border border-red-200 rounded-lg text-red-600 font-medium cursor-pointer transition-all duration-200 hover:bg-red-100 hover:-translate-y-0.5" @click="resetToDefaults">
               Reset to defaults
-            </button>
-            <button class="flex-1 px-5 py-2.5 bg-purple-50 border border-purple-200 rounded-lg text-purple-600 font-medium cursor-pointer transition-all duration-200 hover:bg-purple-100 hover:-translate-y-0.5" @click="close">
-              Done
             </button>
           </div>
         </div>
@@ -242,7 +228,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { X, Minus, Plus, ChevronDown } from 'lucide-vue-next'
 import { romanize } from 'koroman'
 
@@ -266,7 +252,6 @@ const localSettings = ref({
   showKorean: true,
   showEnglish: true,
   displayOrder: 'kr-en',
-  interleaveLines: false,
   romanizationFontSize: 10,
   englishFontSize: 14,
   ...props.settings 
@@ -275,6 +260,8 @@ const localSettings = ref({
 const isMobile = ref(false)
 const isFontDropdownOpen = ref(false)
 const fontSizePresets = [12, 14, 16, 18, 20, 24, 28, 32]
+const romanizationPresets = [4, 6, 8, 10, 12, 14, 16, 18]
+const englishPresets = [6, 8, 10, 12, 14, 16, 18, 20]
 
 const fontOptions = [
   { value: 'NotoSansSC', label: 'Noto Sans SC', fontFamily: "'Noto Sans SC', sans-serif" },
@@ -302,7 +289,6 @@ const getRomanizationForChar = (char) => {
 }
 
 let fontSizeTimeout = null
-let inputTimeout = null
 
 const getSelectedFontLabel = () => {
   const font = fontOptions.find(f => f.value === localSettings.value.selectedFont)
@@ -335,6 +321,13 @@ const decreaseFontSize = () => {
 
 const setFontSize = (size) => {
   localSettings.value.fontSize = size
+  // Ensure romanization and English don't exceed the new Korean size
+  if (localSettings.value.romanizationFontSize > size) {
+    localSettings.value.romanizationFontSize = size
+  }
+  if (localSettings.value.englishFontSize > size) {
+    localSettings.value.englishFontSize = size
+  }
   emitSave()
 }
 
@@ -353,29 +346,11 @@ const decreaseRomanizationSize = () => {
   }
 }
 
-const handleRomanizationInput = () => {
-  if (inputTimeout) clearTimeout(inputTimeout)
-  
-  const value = localSettings.value.romanizationFontSize
-  if (isNaN(value) || value < 4) {
-    localSettings.value.romanizationFontSize = 4
-  } else if (value > localSettings.value.fontSize) {
-    localSettings.value.romanizationFontSize = localSettings.value.fontSize
-  }
-  
-  inputTimeout = setTimeout(() => {
+const setRomanizationSize = (size) => {
+  if (size <= localSettings.value.fontSize) {
+    localSettings.value.romanizationFontSize = size
     emitSave()
-  }, 300)
-}
-
-const validateRomanizationInput = () => {
-  const value = localSettings.value.romanizationFontSize
-  if (isNaN(value) || value < 4) {
-    localSettings.value.romanizationFontSize = 4
-  } else if (value > localSettings.value.fontSize) {
-    localSettings.value.romanizationFontSize = localSettings.value.fontSize
   }
-  emitSave()
 }
 
 // English font size controls
@@ -393,29 +368,11 @@ const decreaseEnglishSize = () => {
   }
 }
 
-const handleEnglishInput = () => {
-  if (inputTimeout) clearTimeout(inputTimeout)
-  
-  const value = localSettings.value.englishFontSize
-  if (isNaN(value) || value < 4) {
-    localSettings.value.englishFontSize = 4
-  } else if (value > localSettings.value.fontSize) {
-    localSettings.value.englishFontSize = localSettings.value.fontSize
-  }
-  
-  inputTimeout = setTimeout(() => {
+const setEnglishSize = (size) => {
+  if (size <= localSettings.value.fontSize) {
+    localSettings.value.englishFontSize = size
     emitSave()
-  }, 300)
-}
-
-const validateEnglishInput = () => {
-  const value = localSettings.value.englishFontSize
-  if (isNaN(value) || value < 4) {
-    localSettings.value.englishFontSize = 4
-  } else if (value > localSettings.value.fontSize) {
-    localSettings.value.englishFontSize = localSettings.value.fontSize
   }
-  emitSave()
 }
 
 const emitSave = () => {
@@ -447,17 +404,12 @@ const handleDisplayOrderChange = () => {
   emit('save', localSettings.value)
 }
 
-const handleInterleaveChange = () => {
-  emit('save', localSettings.value)
-}
-
 const checkMobile = () => {
   isMobile.value = window.innerWidth <= 768
 }
 
 const handleOverlayClick = () => {
-  // Don't close on overlay click - user must click the close button or Done
-  // This prevents accidental closing
+  // Don't close on overlay click - user must click the close button
 }
 
 const close = () => {
@@ -473,7 +425,6 @@ const resetToDefaults = () => {
     showKorean: true,
     showEnglish: true,
     displayOrder: 'kr-en',
-    interleaveLines: false,
     romanizationFontSize: 10,
     englishFontSize: 14
   }
@@ -523,7 +474,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleEscape)
   window.removeEventListener('click', handleClickOutside)
   if (fontSizeTimeout) clearTimeout(fontSizeTimeout)
-  if (inputTimeout) clearTimeout(inputTimeout)
 })
 </script>
 
@@ -594,17 +544,6 @@ onBeforeUnmount(() => {
 input[type="checkbox"],
 input[type="radio"] {
   accent-color: #8B5CF6;
-}
-
-/* Number input styling */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
 }
 
 /* Mobile responsive adjustments */

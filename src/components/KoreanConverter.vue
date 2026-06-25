@@ -6,11 +6,28 @@
         <h1 class="logo">LittleHanzi 한국인</h1>
       </div>
       <div class="header-buttons">
+        <!-- Save Button -->
+        <button 
+          class="save-icon-btn" 
+          @click="handleManualSave" 
+          title="Save Article"
+          :disabled="!inputText.trim() || isSaving"
+        >
+          <Save :size="20" />
+          <span v-if="isSaving" class="save-spinner"></span>
+        </button>
+        
         <button class="history-icon-btn" @click="openHistoryModal" title="Reading History">
           <BookOpen :size="22" />
         </button>
+        
         <button class="settings-icon-btn" @click="openSettingsModal" title="Settings">
           <Settings :size="24" />
+        </button>
+        
+        <!-- Info Button -->
+        <button class="info-icon-btn" @click="openInfoModal" title="Information">
+          <Info :size="22" />
         </button>
       </div>
     </div>
@@ -27,8 +44,19 @@
       @delete-all="handleDeleteAllArticles"
     />
 
+    <!-- Info Modal -->
+    <InfoModal
+      :isOpen="isInfoModalOpen"
+      @close="closeInfoModal"
+    />
+
     <div class="main-content">
       <LoadingSpinner :isLoading="isLoading" :text="loadingText" />
+      
+      <!-- Success Toast for Save -->
+      <div v-if="showSaveToast" class="toast toast-success animate-slideDown">
+        <span>✅ Article saved successfully!</span>
+      </div>
       
       <div class="input-display-row">
         <!-- Korean Text Input -->
@@ -103,19 +131,18 @@
             
             <template v-if="displayOrder === 'en-kr'">
               <!-- English first, then Korean -->
-              <!-- <div v-if="showEnglish && englishSegments[sentenceId]" class="english-translation-box"> -->
-                <div v-if="showEnglish && englishSegments[sentenceId]" class="english-translation-box" :style="{ fontFamily: getFontFamily }">
-                  <div class="english-text" :style="{ 
-                    fontSize: `${englishFontSize}px`, 
-                    lineHeight: '1' 
-                  }">
-                    {{ englishSegments[sentenceId] }}
-                  </div>
+              <div v-if="showEnglish && englishSegments[sentenceId]" class="english-translation-box" :style="{ fontFamily: getFontFamily }">
+                <div class="english-text" :style="{ 
+                  fontSize: `${englishFontSize}px`, 
+                  lineHeight: '1.6' 
+                }">
+                  {{ englishSegments[sentenceId] }}
+                </div>
               </div>
 
-              <div v-if="showKorean" class="line-container">
+              <div v-if="showKorean" class="line-container" :style="{ fontFamily: getFontFamily }">
                 <div class="text-line relative">
-                  <div class="line-words" :style="{ fontFamily: getFontFamily, fontSize: `${fontSize}px` }">
+                  <div class="line-words" :style="{ fontSize: `${fontSize}px` }">
                     <span v-for="(wordData, wordIndex) in block.words" :key="wordIndex" class="word-group">
                       <span class="word-with-romanization">
                         <span class="romanization-above" :style="{ display: showRomanization ? 'flex' : 'none' }">
@@ -146,9 +173,9 @@
 
             <template v-else>
               <!-- Korean first, then English -->
-              <div v-if="showKorean" class="line-container">
+              <div v-if="showKorean" class="line-container" :style="{ fontFamily: getFontFamily }">
                 <div class="text-line relative">
-                  <div class="line-words" :style="{ fontFamily: getFontFamily, fontSize: `${fontSize}px` }">
+                  <div class="line-words" :style="{ fontSize: `${fontSize}px` }">
                     <span v-for="(wordData, wordIndex) in block.words" :key="wordIndex" class="word-group">
                       <span class="word-with-romanization">
                         <span class="romanization-above" :style="{ display: showRomanization ? 'flex' : 'none' }">
@@ -179,7 +206,7 @@
               <div v-if="showEnglish && englishSegments[sentenceId]" class="english-translation-box" :style="{ fontFamily: getFontFamily }">
                 <div class="english-text" :style="{ 
                   fontSize: `${englishFontSize}px`, 
-                  lineHeight: '1.1' 
+                  lineHeight: '1.6' 
                 }">
                   {{ englishSegments[sentenceId] }}
                 </div>
@@ -225,10 +252,11 @@
 <script>
 import ArticleHistoryModal from './ArticleHistoryModal.vue';
 import { useArticleHistory } from '../composables/useArticleHistory';
-import { Edit as EditIcon, Settings, BookOpen } from 'lucide-vue-next';
+import { Edit as EditIcon, Settings, BookOpen, Save, Info } from 'lucide-vue-next';
 import EditModal from './EditModal.vue';
 import ConfirmModal from './ConfirmModal.vue';
 import SettingsModal from './SettingsModal.vue';
+import InfoModal from './InfoModal.vue';
 import { ref, computed, watch } from 'vue';
 import { romanize } from 'koroman';
 import LoadingSpinner from './LoadingSpinner.vue';
@@ -240,10 +268,13 @@ export default {
     EditModal,
     ConfirmModal,
     SettingsModal,
+    InfoModal,
     LoadingSpinner,
     BookOpen,
     EditIcon,
     Settings,
+    Save,
+    Info,
   },
   name: 'KoreanConverter',
   setup() {
@@ -269,15 +300,20 @@ export default {
       loadArticle,
       isCurrentArticle,
       formatDate,
-      resetCurrentTracking
+      resetCurrentTracking,
+      isSaving,
+      saveArticles
     } = useArticleHistory()
     
     const inputText = ref('');
     const englishText = ref('');
     const showConfirmModal = ref(false);
     const isSettingsModalOpen = ref(false);
+    const isInfoModalOpen = ref(false);
     const isLoading = ref(false);
     const loadingText = ref('Processing...');
+    const showSaveToast = ref(false);
+    let toastTimeout = null;
 
     const isEditModalOpen = ref(false)
     const editModalType = ref('korean')
@@ -286,6 +322,29 @@ export default {
 
     const isHistoryModalOpen = ref(false)
     const lastSavedContent = ref({ korean: '', english: '' })
+
+    // Manual save function
+    const handleManualSave = () => {
+      if (!inputText.value.trim()) {
+        return
+      }
+      
+      const article = saveCurrentArticle(inputText.value, englishText.value)
+      if (article) {
+        showSaveToastMessage('Article saved successfully!')
+      }
+    }
+
+    // Show toast message
+    const showSaveToastMessage = (message) => {
+      showSaveToast.value = true
+      if (toastTimeout) {
+        clearTimeout(toastTimeout)
+      }
+      toastTimeout = setTimeout(() => {
+        showSaveToast.value = false
+      }, 3000)
+    }
 
     // Watchers for auto-save
     watch([inputText, englishText], ([newKorean, newEnglish]) => {
@@ -305,6 +364,14 @@ export default {
 
     const closeHistoryModal = () => {
       isHistoryModalOpen.value = false
+    }
+
+    const openInfoModal = () => {
+      isInfoModalOpen.value = true
+    }
+
+    const closeInfoModal = () => {
+      isInfoModalOpen.value = false
     }
 
     const loadArticleIntoEditor = async (article) => {
@@ -360,7 +427,8 @@ export default {
             korean: token,
             koreanChars: [],
             romanized: '',
-            romanizedChars: []
+            romanizedChars: [],
+            isPunctuation: false
           })
         } else if (/[\uAC00-\uD7AF]/.test(token)) {
           if (currentWord) {
@@ -375,9 +443,10 @@ export default {
           }
           result.push({
             korean: token,
-            koreanChars: [],
-            romanized: '',
-            romanizedChars: []
+            koreanChars: [token],
+            romanized: token,
+            romanizedChars: [token],
+            isPunctuation: true
           })
         } else {
           currentWord += token
@@ -413,7 +482,8 @@ export default {
         korean: word,
         koreanChars: koreanChars,
         romanized: romanized,
-        romanizedChars: romanizedChars
+        romanizedChars: romanizedChars,
+        isPunctuation: false
       }
     }
 
@@ -604,6 +674,11 @@ export default {
       handleDeleteAllArticles,
       isCurrentArticle,
       formatDate,
+      
+      // Info modal
+      isInfoModalOpen,
+      openInfoModal,
+      closeInfoModal,
 
       // Data
       inputText,
@@ -619,6 +694,8 @@ export default {
 
       isLoading,
       loadingText,
+      isSaving,
+      showSaveToast,
       
       // Computed
       getFontFamily,
@@ -629,10 +706,14 @@ export default {
       // Methods
       clearOrPasteText,
       clearAllText: clearText,
+      handleManualSave,
+      showSaveToastMessage,
       
       // Modal related
       EditIcon,
       Settings,
+      Save,
+      Info,
       isEditModalOpen,
       editModalTitle,
       editModalContent,
@@ -692,6 +773,46 @@ export default {
   align-items: center;
 }
 
+/* Save Button */
+.save-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.save-icon-btn:hover:not(:disabled) {
+  background: #dbeafe;
+  color: #2563eb;
+  transform: scale(1.05);
+}
+
+.save-icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.save-spinner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .history-icon-btn {
   background: transparent;
   border: none;
@@ -726,6 +847,55 @@ export default {
 .settings-icon-btn:hover {
   background: var(--p-100);
   transform: rotate(90deg);
+}
+
+.info-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--text-muted);
+}
+
+.info-icon-btn:hover {
+  background: #fef3c7;
+  color: #d97706;
+  transform: scale(1.05);
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 3000;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: #16a34a;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .main-content {
@@ -901,8 +1071,7 @@ export default {
   word-break: break-word;
   overflow-wrap: break-word;
   white-space: normal;
-  line-height: 1.2;
-  /* gap: 3px 3px; */
+  line-height: 1.4;
 }
 
 .word-group {
@@ -910,6 +1079,7 @@ export default {
   flex-direction: column;
   align-items: center;
   white-space: normal;
+  margin: 0 1px;
 }
 
 .word-with-romanization {
@@ -922,14 +1092,14 @@ export default {
   display: flex;
   gap: 0px;
   justify-content: center;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   flex-wrap: nowrap;
 }
 
 .romanization-char {
   color: var(--primary);
   font-weight: 400;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.5px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   display: inline-block;
   opacity: 0.7;
@@ -958,7 +1128,7 @@ export default {
 .english-text {
   color: var(--g-800);
   line-height: 1.6;
-  font-family: inherit; /* Inherits from parent which has the selected font */
+  font-family: inherit;
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-word;
@@ -1053,24 +1223,14 @@ export default {
   }
   
   .line-words {
-    gap: 4px 8px;
-  }
-  
-  .romanization-char {
-    font-size: 0.55em !important;
-    min-width: 0.6em !important;
+    gap: 2px 4px;
   }
 }
 
 /* For very small screens */
 @media (max-width: 480px) {
   .line-words {
-    gap: 2px 6px;
-  }
-  
-  .romanization-char {
-    font-size: 0.5em !important;
-    min-width: 0.5em !important;
+    gap: 1px 3px;
   }
   
   .line-container {
@@ -1079,6 +1239,13 @@ export default {
   
   .english-text {
     font-size: 0.9em;
+  }
+  
+  .toast {
+    top: 70px;
+    font-size: 12px;
+    padding: 10px 16px;
+    max-width: 90%;
   }
 }
 </style>
